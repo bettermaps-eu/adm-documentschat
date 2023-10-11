@@ -1,11 +1,11 @@
 [
     {
         "data_path": "../data",
-        "location": "northeurope",
+        "location": "westeurope",
         "subscription_id": "d0ab12cd-f930-4d81-8109-8e1abc886245",
         "resource_group": "bettermaps-resources",
         "search_service_name": "bettermaps-cognitivesearch",
-        "index_name": "adm-index",
+        "index_name": "adm-documentschat-index",
         "chunk_size": 1024,
         "token_overlap": 128,
         "semantic_config_name": "default",
