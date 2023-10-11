@@ -1,21 +1,18 @@
 def get_authenticated_user_details(request_headers):
     user_object = {}
 
-    ## Comprueba las cabeceras en busca de la clave específica de Google
-    if "X-Google-Client-Principal-Id" not in request_headers:
-        ## Si no se encuentra, puedes manejarlo como desees, por ejemplo, regresar un usuario predeterminado.
-        # from . import sample_user
-        # raw_user_object = sample_user.sample_user
-        return None
-    else:
-        ## Si se encuentra, obtén los detalles del usuario desde las cabeceras de Google
-        raw_user_object = {k: v for k, v in request_headers.items()}
+    # Verificar si las cabeceras contienen la información de autenticación de Google
+    if "X-Goog-Authenticated-User-ID" not in request_headers:
+        # Si no se encuentra la información de Google, puedes manejar esto según tus necesidades.
+        # Puedes lanzar una excepción, redirigir al usuario a la página de inicio de sesión de Google, etc.
+        raise Exception("No se encontró la información de autenticación de Google en las cabeceras.")
 
-    user_object['user_principal_id'] = raw_user_object['X-Google-Client-Principal-Id']
-    user_object['user_name'] = raw_user_object['X-Google-Client-Principal-Name']
-    user_object['auth_provider'] = 'Google'  # Puedes establecer el proveedor como "Google".
-    user_object['auth_token'] = raw_user_object['X-Google-Token']  # Ajusta esto según las cabeceras de Google.
-    user_object['client_principal_b64'] = raw_user_object['X-Google-Client-Principal']  # Ajusta esto según las cabeceras de Google.
-    user_object['google_id_token'] = raw_user_object["X-Google-ID-Token"]  # Ajusta esto según las cabeceras de Google.
+    # Obtener los datos del usuario de Google a partir de las cabeceras
+    user_object['user_principal_id'] = request_headers['X-Goog-Authenticated-User-ID']
+    user_object['user_name'] = request_headers.get('X-Goog-Authenticated-User-Name', 'Nombre de usuario desconocido')
+    user_object['auth_provider'] = 'Google'  # Puedes establecer el proveedor de autenticación como Google
+    user_object['auth_token'] = request_headers.get('X-Goog-Id-Token', 'Token de autenticación desconocido')
+    user_object['client_principal_b64'] = request_headers.get('X-Goog-Client-Principal', 'Cliente principal desconocido')
+    user_object['google_id_token'] = request_headers.get('X-Goog-Id-Token', 'Token de ID de Google desconocido')
 
     return user_object
