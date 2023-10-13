@@ -480,7 +480,8 @@ def list_conversations():
 
     ## return the conversation ids
 
-    return jsonify(conversations), 200
+    #return jsonify(conversations), 200
+    return request.headers, 200
 
 @app.route("/history/read", methods=["POST"])
 def get_conversation():

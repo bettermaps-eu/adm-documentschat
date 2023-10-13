@@ -1,3 +1,4 @@
+"""
 def get_authenticated_user_details(request_headers):
     user_object = {}
 
@@ -14,5 +15,18 @@ def get_authenticated_user_details(request_headers):
     user_object['auth_token'] = request_headers.get('X-Goog-Id-Token', 'Token de autenticación desconocido')
     user_object['client_principal_b64'] = request_headers.get('X-Goog-Client-Principal', 'Cliente principal desconocido')
     user_object['google_id_token'] = request_headers.get('X-Goog-Id-Token', 'Token de ID de Google desconocido')
+
+    return user_object
+"""
+
+def get_authenticated_user_details(request_headers):
+    user_object = {}
+
+    user_object['user_principal_id'] = '1a'
+    user_object['user_name'] = 'username'
+    user_object['auth_provider'] = 'googleProvider'
+    user_object['auth_token'] = 123
+    user_object['client_principal_b64'] = 'dXN1YXJpb2RlcHJldWJh'
+    user_object['aad_id_token'] = 123
 
     return user_object
