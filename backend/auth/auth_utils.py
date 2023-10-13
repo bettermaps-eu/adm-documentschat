@@ -1,24 +1,25 @@
-"""
 def get_authenticated_user_details(request_headers):
     user_object = {}
 
-    # Verificar si las cabeceras contienen la información de autenticación de Google
-    if "X-Goog-Authenticated-User-Id" not in request_headers:
-        # Si no se encuentra la información de Google, puedes manejar esto según tus necesidades.
-        # Puedes lanzar una excepción, redirigir al usuario a la página de inicio de sesión de Google, etc.
-        raise Exception("No se encontró la información de autenticación de Google en las cabeceras.")
+    ## check the headers for the Principal-Id (the guid of the signed in user)
+    if "X-Ms-Client-Principal-Id" not in request_headers.keys():
+        ## if it's not, assume we're in development mode and return a default user
+        from . import sample_user
+        raw_user_object = sample_user.sample_user
+    else:
+        ## if it is, get the user details from the EasyAuth headers
+        raw_user_object = {k:v for k,v in request_headers.items()}
 
-    # Obtener los datos del usuario de Google a partir de las cabeceras
-    user_object['user_principal_id'] = request_headers['X-Goog-Authenticated-User-Id']
-    user_object['user_name'] = request_headers.get('X-Goog-Authenticated-User-Name', 'Nombre de usuario desconocido')
-    user_object['auth_provider'] = 'Google'  # Puedes establecer el proveedor de autenticación como Google
-    user_object['auth_token'] = request_headers.get('X-Goog-Id-Token', 'Token de autenticación desconocido')
-    user_object['client_principal_b64'] = request_headers.get('X-Goog-Client-Principal', 'Cliente principal desconocido')
-    user_object['google_id_token'] = request_headers.get('X-Goog-Id-Token', 'Token de ID de Google desconocido')
+    user_object['user_principal_id'] = raw_user_object['X-Ms-Client-Principal-Id']
+    user_object['user_name'] = raw_user_object['X-Ms-Client-Principal-Name']
+    user_object['auth_provider'] = raw_user_object['X-Ms-Client-Principal-Idp']
+    user_object['auth_token'] = raw_user_object['X-Ms-Token-Google-Access-Token'] #google auth
+    user_object['client_principal_b64'] = raw_user_object['X-Ms-Client-Principal']
+    user_object['aad_id_token'] = raw_user_object["X-Ms-Token-Google-Id-Token"] #google auth
 
     return user_object
-"""
 
+"""
 def get_authenticated_user_details(request_headers):
     user_object = {}
 
@@ -30,3 +31,4 @@ def get_authenticated_user_details(request_headers):
     user_object['aad_id_token'] = 123
 
     return user_object
+"""
