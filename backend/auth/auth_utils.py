@@ -13,9 +13,9 @@ def get_authenticated_user_details(request_headers):
     user_object['user_principal_id'] = raw_user_object['X-Ms-Client-Principal-Id']
     user_object['user_name'] = raw_user_object['X-Ms-Client-Principal-Name']
     user_object['auth_provider'] = raw_user_object['X-Ms-Client-Principal-Idp']
-    user_object['auth_token'] = raw_user_object['X-Ms-Token-Google-Access-Token'] #google auth
+    user_object['auth_token'] = 'tokenauth' #para q funcione con cualquier proveedor de identidad  #raw_user_object['X-Ms-Token-Google-Access-Token'] #google auth
     user_object['client_principal_b64'] = raw_user_object['X-Ms-Client-Principal']
-    user_object['aad_id_token'] = raw_user_object["X-Ms-Token-Google-Id-Token"] #google auth
+    user_object['aad_id_token'] = 'aad_id_token' #para q funcione con cualquier proveedor de identidad  #raw_user_object["X-Ms-Token-Google-Id-Token"] #google auth
 
     return user_object
 
