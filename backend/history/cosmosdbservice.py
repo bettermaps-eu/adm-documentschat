@@ -29,13 +29,14 @@ class CosmosConversationClient():
         except:
             return False
 
-    def create_conversation(self, user_id, title = ''):
+    def create_conversation(self, user_id, user_mail, title = ''):
         conversation = {
             'id': str(uuid.uuid4()),  
             'type': 'conversation',
             'createdAt': datetime.utcnow().isoformat(),  
             'updatedAt': datetime.utcnow().isoformat(),  
             'userId': user_id,
+            'userMail' : user_mail, #Añadir el mail con el que  se autentica el usuario para acceder al chat
             'title': title
         }
         ## TODO: add some error handling based on the output of the upsert_item call
@@ -108,11 +109,12 @@ class CosmosConversationClient():
         else:
             return conversation[0]
  
-    def create_message(self, conversation_id, user_id, input_message: dict):
+    def create_message(self, conversation_id, user_id, user_mail, input_message: dict):
         message = {
             'id': str(uuid.uuid4()),
             'type': 'message',
             'userId' : user_id,
+            'userMail': user_mail, #Añadir el mail con el que  se autentica el usuario para acceder al chat
             'createdAt': datetime.utcnow().isoformat(),
             'updatedAt': datetime.utcnow().isoformat(),
             'conversationId' : conversation_id,
